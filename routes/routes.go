@@ -1,12 +1,15 @@
 package routes
 
-import "github.com/labstack/echo/v4"
+import (
+	"github.com/labstack/echo/v4"
+	"github.com/mccune1224/betrayal-api/handler"
+)
 
-func AddRoutes(app *echo.Echo) {
+func AddRoutes(app *echo.Echo, h *handler.Handler) {
 	api := app.Group("/api")
 
-	item := api.Group("/item")
-	item.GET("", func(c echo.Context) error {
-		return c.JSON(200, echo.Map{"item": "hit"})
-	})
+	items := api.Group("/items")
+	items.GET("/:id", h.GetItemByID)
+	items.GET("/page", h.GetItems)
+	items.GET("/search", h.GetItems)
 }
